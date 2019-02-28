@@ -1,0 +1,45 @@
+version: '3'
+services:
+  magento:
+    image: thinlt/magento:nginx-1.15-php7.1
+    volumes:
+      - ./magento:/var/www/html
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      webnet:
+        aliases:
+          - localhost.com
+
+  db:
+    image: mariadb:10.3.13
+    environment:
+      MYSQL_ROOT_PASSWORD: magento
+      MYSQL_DATABASE: magento
+    volumes:
+      - conf.d:/etc/mysql/conf.d
+      - mysql:/var/lib/mysql
+    networks:
+      - webnet
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 81:80
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: magento
+    networks:
+      - webnet
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 82:8025
+    networks:
+      - webnet
+
+networks:
+  webnet:
