@@ -1,7 +1,7 @@
 version: '3'
 services:
   magento:
-    image: thinlt/magento:nginx-1.15-php7.1
+    image: thinlt/magento:nginx-1.15-php-7.1
     volumes:
       - ./magento:/var/www/html
     ports:
@@ -18,8 +18,8 @@ services:
       MYSQL_ROOT_PASSWORD: magento
       MYSQL_DATABASE: magento
     volumes:
-      - conf.d:/etc/mysql/conf.d
-      - mysql:/var/lib/mysql
+      - ./conf.d:/etc/mysql/conf.d
+      - ./mysql:/var/lib/mysql
     networks:
       - webnet
 
